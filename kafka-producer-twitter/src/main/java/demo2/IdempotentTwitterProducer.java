@@ -1,4 +1,4 @@
-package com.github.paulierox.kafka.demo2;
+package demo2;
 
 import com.google.common.collect.Lists;
 import com.twitter.hbc.ClientBuilder;

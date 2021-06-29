@@ -1,16 +1,17 @@
-package com.github.paulierox.kafka.Demo1;
+package kafka.Demo1;
 
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.ProducerConfig;
-import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.clients.producer.*;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
-public class ProducerDemo {
+public class ProducerDemoWithCallback {
 
     public static void main(String[] args) throws InterruptedException{
+        Logger logger= LoggerFactory.getLogger(ProducerDemoWithCallback.class);
         String server = "127.0.0.1:9092";
         System.out.println("Hello World");
 
@@ -23,7 +24,7 @@ public class ProducerDemo {
 
 
 
-        for (int i = 500; i < 510; i++) {
+        for (int i = 509; i < 510; i++) {
             //create Producer
 
                 KafkaProducer<String, String> producer = new KafkaProducer<String, String>(properties);
@@ -34,7 +35,24 @@ public class ProducerDemo {
 
                 TimeUnit.SECONDS.sleep(1);
                 //send data
-                producer.send(record);
+                producer.send(record, new Callback() {
+
+                    public void onCompletion(RecordMetadata recordMetadata, Exception e) {
+                        if(e==null){
+                            logger.info("Received new Metadata"+"\n"+
+                                    "Topic: "+recordMetadata.topic()+"\n"+
+                                    "Partition: "+recordMetadata.partition()+"\n"+
+                                    "Offset: "+ recordMetadata.offset()+"\n"+
+                                    "Time Stamp"+recordMetadata.timestamp());
+                        }
+                        else{
+
+                            logger.error(String.valueOf(e));
+
+                        }
+
+                        }
+                    });
                 producer.flush();
                 producer.close();
 

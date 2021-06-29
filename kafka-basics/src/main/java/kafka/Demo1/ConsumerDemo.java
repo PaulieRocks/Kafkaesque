@@ -1,4 +1,4 @@
-package com.github.paulierox.kafka.Demo1;
+package kafka.Demo1;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -11,12 +11,11 @@ import org.slf4j.LoggerFactory;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.Properties;
-import java.util.concurrent.CountDownLatch;
 
-public class ConsumerDemoWithThreads {
+public class ConsumerDemo {
     public static void main(String[] args) {
-        Logger logger= LoggerFactory.getLogger(ConsumerDemoWithThreads.class.getName());
-        String groupid="group4";
+        Logger logger= LoggerFactory.getLogger(ConsumerDemo.class.getName());
+        String groupid="group3";
         String bootstrapservers="127.0.0.1:9092";
 
         System.out.println("Hello Consumer World");
@@ -41,25 +40,6 @@ public class ConsumerDemoWithThreads {
                 logger.info("Partition : "+record.partition());
 
             }
-        }
-
-
-    }
-
-    public class ConsumerThread implements Runnable{
-
-        private CountDownLatch latch;
-
-        public ConsumerThread(CountDownLatch latch){
-
-        }
-        @Override
-        public void run() {
-
-                    }
-
-        public void shutDown(){
-
         }
 
 
